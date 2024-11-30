@@ -323,7 +323,7 @@ def main_menu():
         choice = input("Введите номер действия: ")
         try:
             if choice == '1':
-                notes_menu()
+                note_menu()
             elif choice == '2':
                 task_menu()
             elif choice == '3':
@@ -333,9 +333,9 @@ def main_menu():
             elif choice == '5':
                 calculator()
             elif choice == '6':
-                export_to_csv()
+                export_menu()
             elif choice == '7':
-                import_from_csv()
+                import_menu()
             elif choice == '8':
                 print("Выход из программы...")
                 break
@@ -344,6 +344,68 @@ def main_menu():
         except Exception as e:
             logging.error(f"Ошибка в главном меню: {e}")
             print("Произошла ошибка. Попробуйте снова.")
+
+
+def import_menu():
+    while True:
+        print("""
+        1. Импортировать заметки
+        2. Импортировать задачи
+        3. Импортировать контакты
+        4. Импортировать финансовые записи
+        5. Назад
+        """)
+        choice = input("Выберите действие: ")
+        try:
+            if choice == "1":
+                import_from_csv('notes.csv', Note, ['id', 'title', 'content', 'timestamp'])
+            elif choice == "2":
+                import_from_csv('tasks.csv', Task, ['id', 'title', 'description', 'done', 'priority', 'due_date'])
+            elif choice == "3":
+                import_from_csv('contacts.csv', Contact, ['id', 'name', 'phone', 'email'])
+            elif choice == "4":
+                import_from_csv('finance.csv', FinanceRecord, ['id', 'amount', 'category', 'date', 'description'])
+            elif choice == "5":
+                return
+            else:
+                print("Неверный выбор.")
+        except Exception as e:
+            logging.error(f"Ошибка в импорте: {e}")
+            print("Произошла ошибка. Попробуйте снова.")
+
+
+def export_menu():
+    while True:
+        print("""
+        1. Экспортировать заметки
+        2. Экспортировать задачи
+        3. Экспортировать контакты
+        4. Экспортировать финансовые записи
+        5. Назад
+        """)
+        choice = input("Выберите действие: ")
+
+        try:
+            if choice == "1":
+                export_to_csv('notes.csv', [note.to_dict() for note in load_data('notes.json')],
+                              ['id', 'title', 'content', 'timestamp'])
+            elif choice == "2":
+                export_to_csv('tasks.csv', [task.to_dict() for task in load_data('tasks.json')],
+                              ['id', 'title', 'description', 'done', 'priority', 'due_date'])
+            elif choice == "3":
+                export_to_csv('contacts.csv', [contact.to_dict() for contact in load_data('contacts.json')],
+                              ['id', 'name', 'phone', 'email'])
+            elif choice == "4":
+                export_to_csv('finance.csv', [record.to_dict() for record in load_data('finance.json')],
+                              ['id', 'amount', 'category', 'date', 'description'])
+            elif choice == "5":
+                return
+            else:
+                print("Неверный выбор")
+        except Exception as e:
+            logging.error(f"Ошибка в импорте: {e}")
+            print("Произошла ошибка. Попробуйте снова.")
+
 
 # Меню для работы с заметками
 def note_menu():
