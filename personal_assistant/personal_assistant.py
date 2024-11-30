@@ -403,7 +403,7 @@ def export_menu():
             else:
                 print("Неверный выбор")
         except Exception as e:
-            logging.error(f"Ошибка в импорте: {e}")
+            logging.error(f"Ошибка в экспорте: {e}")
             print("Произошла ошибка. Попробуйте снова.")
 
 
