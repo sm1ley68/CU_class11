@@ -48,7 +48,7 @@ class Note:
         self.content = content
         self.timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
-    def to_dict(self):
+    def to_dict_note(self):
         return {
             "id": self.id,
             "title": self.title,
@@ -62,7 +62,7 @@ def create_note():
     note = Note(title, content)
     notes = load_data('notes.json')
     note.id = len(notes) + 1
-    notes.append(note.to_dict())
+    notes.append(note.to_dict_note())
     save_data('notes.json', notes)
     print("Заметка успешно добавлена!")
 
@@ -113,7 +113,7 @@ class Task:
         self.priority = priority
         self.due_date = due_date
 
-    def to_dict(self):
+    def to_dict_task(self):
         return {
             "id": self.id,
             "title": self.title,
@@ -131,7 +131,7 @@ def create_task():
     task = Task(title, description, priority, due_date)
     tasks = load_data('tasks.json')
     task.id = len(tasks) + 1
-    tasks.append(task.to_dict())
+    tasks.append(task.to_dict_task())
     save_data('tasks.json', tasks)
     print("Задача успешно добавлена!")
 
@@ -183,7 +183,7 @@ class Contact:
         self.phone = phone
         self.email = email
 
-    def to_dict(self):
+    def to_dict_contact(self):
         return {
             "id": self.id,
             "name": self.name,
@@ -198,7 +198,7 @@ def create_contact():
     contact = Contact(name, phone, email)
     contacts = load_data('contacts.json')
     contact.id = len(contacts) + 1
-    contacts.append(contact.to_dict())
+    contacts.append(contact.to_dict_contact())
     save_data('contacts.json', contacts)
     print("Контакт успешно добавлен!")
 
@@ -249,7 +249,7 @@ class FinanceRecord:
         self.date = date
         self.description = description
 
-    def to_dict(self):
+    def to_dict_financerecord(self):
         return {
             "id": self.id,
             "amount": self.amount,
@@ -266,7 +266,7 @@ def create_finance_record():
     record = FinanceRecord(amount, category, date, description)
     finance_records = load_data('finance.json')
     record.id = len(finance_records) + 1
-    finance_records.append(record.to_dict())
+    finance_records.append(record.to_dict_financerecord())
     save_data('finance.json', finance_records)
     print("Финансовая запись успешно добавлена!")
 
@@ -387,16 +387,16 @@ def export_menu():
 
         try:
             if choice == "1":
-                export_to_csv('notes.csv', [note.to_dict() for note in load_data('notes.json')],
+                export_to_csv([note for note in load_data('notes.json')], 'notes.csv',
                               ['id', 'title', 'content', 'timestamp'])
             elif choice == "2":
-                export_to_csv('tasks.csv', [task.to_dict() for task in load_data('tasks.json')],
+                export_to_csv([task for task in load_data('tasks.json')], 'tasks.csv',
                               ['id', 'title', 'description', 'done', 'priority', 'due_date'])
             elif choice == "3":
-                export_to_csv('contacts.csv', [contact.to_dict() for contact in load_data('contacts.json')],
+                export_to_csv([contact for contact in load_data('contacts.json')], 'contacts.csv',
                               ['id', 'name', 'phone', 'email'])
             elif choice == "4":
-                export_to_csv('finance.csv', [record.to_dict() for record in load_data('finance.json')],
+                export_to_csv([record.to_dict_note() for record in load_data('finance.json')], 'finance.csv',
                               ['id', 'amount', 'category', 'date', 'description'])
             elif choice == "5":
                 return
